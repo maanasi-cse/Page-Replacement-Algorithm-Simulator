@@ -1,0 +1,103 @@
+/**
+ * base.css — Global Reset, Body, Canvas, and Shared Animations
+ *
+ * PURPOSE:
+ *   Sets sensible defaults for every element so browsers display
+ *   things consistently. Also styles the background canvas and
+ *   defines the @keyframes used across multiple sections.
+ *
+ * LOADED AFTER: variables.css (so var(--...) references work)
+ */
+
+/* ── Box-sizing reset ─────────────────────────────────────────────
+   By default, browsers don't include padding/border in element width.
+   This rule changes that so width:200px means 200px including padding.
+   The * selector applies it to EVERY element. ──────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin:  0;
+  padding: 0;
+}
+
+/* ── Smooth scroll ────────────────────────────────────────────────
+   Makes anchor links and scrollIntoView() animate smoothly instead
+   of jumping instantly. ─────────────────────────────────────────── */
+html { scroll-behavior: smooth; }
+
+/* ── Body ─────────────────────────────────────────────────────────
+   Sets the base background, text colour, font, and prevents
+   horizontal scroll bars from appearing. ─────────────────────────── */
+body {
+  background:  #020714;           /* deep navy (matches --bg) */
+  color:       var(--text);       /* near-white default text */
+  font-family: var(--font-body);  /* Inter for body copy */
+  overflow-x:  hidden;            /* prevent side-scroll from animations */
+  min-height:  100vh;             /* always fills the full viewport height */
+}
+
+/* ── Custom scrollbar (Chrome / Edge / Safari) ────────────────────
+   Browsers let you style the scrollbar with ::-webkit-scrollbar.
+   We make it thin (6px), dark track, and cyan thumb. ──────────────── */
+::-webkit-scrollbar       { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--cyan); border-radius: 3px; }
+
+/* ── Background canvas ────────────────────────────────────────────
+   The <canvas id="particle-canvas"> is fixed to the viewport so it
+   always fills the screen behind all other content.
+   pointer-events:none means mouse clicks pass through it. ─────────── */
+#particle-canvas {
+  position:       fixed;  /* stays in place as the user scrolls */
+  inset:          0;      /* shorthand for top:0; right:0; bottom:0; left:0 */
+  width:          100%;
+  height:         100%;
+  pointer-events: none;   /* invisible to mouse/touch — clicks reach the UI */
+  z-index:        0;      /* behind everything (sections use z-index:1+) */
+}
+
+/* ── Section base ─────────────────────────────────────────────────
+   position:relative lets us use z-index on sections.
+   z-index:1 puts them above the canvas (z-index:0). ──────────────── */
+section { position: relative; z-index: 1; }
+
+/* ═══════════════════════════════════════════════════════════════
+   GLOBAL @KEYFRAMES
+   These animation definitions are used by CSS classes defined in
+   other files. They live here so there's only one copy.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* fadeUp — element rises into view from below (used by hero and cards) */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* fadeIn — simple opacity fade (used by various overlays) */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* popIn — scale from small to full size with a slight overshoot bounce */
+@keyframes popIn {
+  0%   { transform: scale(0.8); opacity: 0; }
+  60%  { transform: scale(1.05); }  /* slightly bigger before settling */
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* shake — horizontal jitter played when a page fault occurs on a frame */
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  20%     { transform: translateX(-6px); }
+  40%     { transform: translateX( 6px); }
+  60%     { transform: translateX(-4px); }
+  80%     { transform: translateX( 4px); }
+}
+
+/* swap — gentle scale+rotate played when a page is replaced in a frame */
+@keyframes swap {
+  0%   { transform: scale(1); }
+  30%  { transform: scale(1.12) rotate( 2deg); }
+  70%  { transform: scale(0.95) rotate(-1deg); }
+  100% { transform: scale(1); }
+}

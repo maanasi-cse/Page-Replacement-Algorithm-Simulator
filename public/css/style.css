@@ -1,71 +1,414 @@
-/* ── Import fonts ─────────────────────────────────────────────────── */
+/**
+ * variables.css — Design Tokens (CSS Custom Properties)
+ *
+ * WHY A SEPARATE FILE?
+ *   All colours, spacing, and font names are defined ONCE here as CSS
+ *   variables (also called "custom properties"). Every other stylesheet
+ *   references these variables (e.g. var(--cyan)) instead of hard-coding
+ *   a hex value. This means:
+ *     • Changing the theme colour in one place updates the whole app.
+ *     • Students can see the entire colour palette at a glance.
+ *
+ * HOW CSS VARIABLES WORK:
+ *   Defined with a leading --  inside :root { }
+ *   Used anywhere with  var(--variable-name)
+ *   Example:   color: var(--cyan);   →   color: #00c8ff;
+ */
+
+/* ── Google Fonts ─────────────────────────────────────────────────
+   @import loads three font families from Google's CDN:
+     Orbitron   — futuristic display font for headings and numbers
+     Share Tech Mono — monospaced font for code-like labels
+     Inter      — clean sans-serif for body text
+   ──────────────────────────────────────────────────────────────── */
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Share+Tech+Mono&family=Inter:wght@300;400;500;600&display=swap');
 
-/* ── CSS Variables ────────────────────────────────────────────────── */
+/* ── :root — global scope for CSS variables ────────────────────── */
 :root {
-  --bg:        #020714;
-  --bg2:       #070d1f;
-  --bg3:       #0c1632;
-  --glass:     rgba(255, 255, 255, 0.04);
-  --glass2:    rgba(255, 255, 255, 0.08);
-  --border:    rgba(0, 200, 255, 0.15);
-  --border2:   rgba(0, 200, 255, 0.3);
-  --cyan:      #00c8ff;
-  --cyan-glow: rgba(0, 200, 255, 0.4);
-  --green:     #00ff88;
-  --green-glow:rgba(0, 255, 136, 0.4);
-  --red:       #ff3366;
-  --red-glow:  rgba(255, 51, 102, 0.4);
-  --yellow:    #ffcc00;
-  --purple:    #a855f7;
-  --text:      #e2e8f0;
-  --text-dim:  #64748b;
-  --text-muted:#5b6a7e;
-  --font-display: 'Orbitron', monospace;
+
+  /* ── Background colours ── */
+  --bg:    #020714;  /* deep navy — main page background */
+  --bg2:   #070d1f;  /* slightly lighter navy — used for panels */
+  --bg3:   #0c1632;  /* medium navy — borders, inputs */
+
+  /* ── Glass-morphism panel fills ──
+     rgba with low opacity so the animated canvas shows faintly through */
+  --glass:  rgba(8,  16, 40, 0.82);  /* panel background: 82% opaque */
+  --glass2: rgba(12, 24, 56, 0.90);  /* slightly more opaque variant */
+
+  /* ── Border colours ── */
+  --border:  rgba(0, 200, 255, 0.20);  /* subtle cyan border */
+  --border2: rgba(0, 200, 255, 0.40);  /* more visible cyan border */
+
+  /* ── Accent colours ── */
+  --cyan:       #00c8ff;              /* primary accent: page hits, labels */
+  --cyan-glow:  rgba(0, 200, 255, 0.4); /* glow shadow for cyan elements */
+
+  --green:      #00ff88;              /* success: page hit frames */
+  --green-glow: rgba(0, 255, 136, 0.4);
+
+  --red:        #ff3366;              /* error: page fault frames */
+  --red-glow:   rgba(255, 51, 102, 0.4);
+
+  --yellow:     #ffcc00;              /* warning: frame replacement */
+  --purple:     #a855f7;              /* secondary accent: LRU, gradients */
+
+  /* ── Text colours ── */
+  --text:       #f0f6ff;  /* primary text — near-white, easy on dark bg */
+  --text-dim:   #94a3b8;  /* secondary text — muted grey-blue */
+  --text-muted: #64748b;  /* tertiary text — even more muted */
+
+  /* ── Font stacks ──
+     font-display = headings, numbers  (Orbitron is the star, monospace fallback)
+     font-mono    = code labels, step numbers
+     font-body    = paragraphs, descriptions */
+  --font-display: 'Orbitron',      monospace;
   --font-mono:    'Share Tech Mono', monospace;
-  --font-body:    'Inter', sans-serif;
+  --font-body:    'Inter',           sans-serif;
+}
+/**
+ * base.css — Global Reset, Body, Canvas, and Shared Animations
+ *
+ * PURPOSE:
+ *   Sets sensible defaults for every element so browsers display
+ *   things consistently. Also styles the background canvas and
+ *   defines the @keyframes used across multiple sections.
+ *
+ * LOADED AFTER: variables.css (so var(--...) references work)
+ */
+
+/* ── Box-sizing reset ─────────────────────────────────────────────
+   By default, browsers don't include padding/border in element width.
+   This rule changes that so width:200px means 200px including padding.
+   The * selector applies it to EVERY element. ──────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin:  0;
+  padding: 0;
 }
 
-/* ── Reset & Base ─────────────────────────────────────────────────── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
+/* ── Smooth scroll ────────────────────────────────────────────────
+   Makes anchor links and scrollIntoView() animate smoothly instead
+   of jumping instantly. ─────────────────────────────────────────── */
 html { scroll-behavior: smooth; }
 
+/* ── Body ─────────────────────────────────────────────────────────
+   Sets the base background, text colour, font, and prevents
+   horizontal scroll bars from appearing. ─────────────────────────── */
 body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--font-body);
-  overflow-x: hidden;
-  min-height: 100vh;
+  background:  #020714;           /* deep navy (matches --bg) */
+  color:       var(--text);       /* near-white default text */
+  font-family: var(--font-body);  /* Inter for body copy */
+  overflow-x:  hidden;            /* prevent side-scroll from animations */
+  min-height:  100vh;             /* always fills the full viewport height */
 }
 
-/* ── Scrollbar ────────────────────────────────────────────────────── */
-::-webkit-scrollbar { width: 6px; }
+/* ── Custom scrollbar (Chrome / Edge / Safari) ────────────────────
+   Browsers let you style the scrollbar with ::-webkit-scrollbar.
+   We make it thin (6px), dark track, and cyan thumb. ──────────────── */
+::-webkit-scrollbar       { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
 ::-webkit-scrollbar-thumb { background: var(--cyan); border-radius: 3px; }
 
-/* ── Dataveyes-style particle network canvas ──────────────────────── */
+/* ── Background canvas ────────────────────────────────────────────
+   The <canvas id="particle-canvas"> is fixed to the viewport so it
+   always fills the screen behind all other content.
+   pointer-events:none means mouse clicks pass through it. ─────────── */
 #particle-canvas {
+  position:       fixed;  /* stays in place as the user scrolls */
+  inset:          0;      /* shorthand for top:0; right:0; bottom:0; left:0 */
+  width:          100%;
+  height:         100%;
+  pointer-events: none;   /* invisible to mouse/touch — clicks reach the UI */
+  z-index:        0;      /* behind everything (sections use z-index:1+) */
+}
+
+/* ── Section base ─────────────────────────────────────────────────
+   position:relative lets us use z-index on sections.
+   z-index:1 puts them above the canvas (z-index:0). ──────────────── */
+section { position: relative; z-index: 1; }
+
+/* ═══════════════════════════════════════════════════════════════
+   GLOBAL @KEYFRAMES
+   These animation definitions are used by CSS classes defined in
+   other files. They live here so there's only one copy.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* fadeUp — element rises into view from below (used by hero and cards) */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* fadeIn — simple opacity fade (used by various overlays) */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* popIn — scale from small to full size with a slight overshoot bounce */
+@keyframes popIn {
+  0%   { transform: scale(0.8); opacity: 0; }
+  60%  { transform: scale(1.05); }  /* slightly bigger before settling */
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* shake — horizontal jitter played when a page fault occurs on a frame */
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  20%     { transform: translateX(-6px); }
+  40%     { transform: translateX( 6px); }
+  60%     { transform: translateX(-4px); }
+  80%     { transform: translateX( 4px); }
+}
+
+/* swap — gentle scale+rotate played when a page is replaced in a frame */
+@keyframes swap {
+  0%   { transform: scale(1); }
+  30%  { transform: scale(1.12) rotate( 2deg); }
+  70%  { transform: scale(0.95) rotate(-1deg); }
+  100% { transform: scale(1); }
+}
+/* ════════════════════════════════════════════════════════════════
+   BOOT SCREEN
+   ════════════════════════════════════════════════════════════════ */
+#boot-screen {
   position: fixed;
   inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 0;
+  background: #000;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
 }
 
-
-/* ── Floating memory blocks (hero) — keep for subtle hero depth ───── */
-.floating-blocks {
+#boot-scanlines {
   position: absolute;
   inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0,0,0,.15) 0px,
+    rgba(0,0,0,.15) 1px,
+    transparent 1px,
+    transparent 3px
+  );
   pointer-events: none;
-  overflow: hidden;
-  display: none; /* replaced by canvas */
+  animation: scanMove 8s linear infinite;
+}
+@keyframes scanMove {
+  from { background-position: 0 0; }
+  to   { background-position: 0 100px; }
 }
 
-/* ── Section ──────────────────────────────────────────────────────── */
-section { position: relative; z-index: 1; }
+#boot-content {
+  width: min(640px, 90vw);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+#boot-logo {
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 8vw, 4rem);
+  font-weight: 900;
+  color: var(--cyan);
+  letter-spacing: 6px;
+  text-shadow: 0 0 40px var(--cyan-glow);
+  animation: bootLogoPulse 1s ease infinite alternate;
+}
+#boot-logo span { color: var(--green); }
+@keyframes bootLogoPulse {
+  from { text-shadow: 0 0 20px var(--cyan-glow); }
+  to   { text-shadow: 0 0 60px var(--cyan), 0 0 100px rgba(0,200,255,.3); }
+}
+
+#boot-version {
+  font-size: 12px;
+  color: var(--text-muted);
+  letter-spacing: 3px;
+}
+
+#boot-terminal {
+  background: rgba(0,200,255,.04);
+  border: 1px solid rgba(0,200,255,.15);
+  border-radius: 8px;
+  padding: 16px;
+  min-height: 160px;
+  font-size: 13px;
+  line-height: 2;
+  overflow: hidden;
+}
+
+.boot-line {
+  animation: typeIn .25s ease both;
+}
+@keyframes typeIn {
+  from { opacity: 0; transform: translateX(-8px); }
+  to   { opacity: 1; transform: none; }
+}
+
+#boot-frames-row {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  min-height: 70px;
+}
+
+.boot-frame {
+  width: 70px; height: 70px;
+  border: 2px solid rgba(0,200,255,.2);
+  border-radius: 12px;
+  background: rgba(0,0,0,.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  opacity: 0;
+  transform: scale(.8);
+  transition: all .35s ease;
+}
+.boot-frame.active { opacity: 1; transform: scale(1); }
+.boot-frame.loaded {
+  border-color: var(--green);
+  box-shadow: 0 0 20px rgba(0,255,136,.3);
+}
+.bf-label { font-size: 10px; color: var(--text-muted); letter-spacing: 1px; }
+.bf-val   { font-size: 24px; font-weight: 900; color: var(--cyan); transition: color .2s; }
+.boot-frame.loaded .bf-val { color: var(--green); }
+
+#boot-fault-flash {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--red);
+  text-align: center;
+  letter-spacing: 3px;
+  opacity: 0;
+  transition: opacity .2s;
+  min-height: 28px;
+  text-shadow: 0 0 20px var(--red);
+}
+#boot-fault-flash.active { opacity: 1; }
+
+#boot-bar-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+#boot-bar-fill {
+  flex: 1;
+  height: 4px;
+  background: linear-gradient(90deg, var(--cyan), var(--purple));
+  border-radius: 2px;
+  width: 0;
+  box-shadow: 0 0 10px var(--cyan-glow);
+  transition: width .05s linear;
+}
+#boot-bar-pct {
+  font-size: 11px;
+  color: var(--cyan);
+  min-width: 36px;
+  text-align: right;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   GUIDED TOUR
+   ════════════════════════════════════════════════════════════════ */
+#tour-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 8000;
+  pointer-events: none;
+  background: rgba(0, 0, 0, 0.15);
+}
+
+#tour-spotlight {
+  pointer-events: none;
+  z-index: 8001;
+}
+
+#tour-card {
+  background: rgba(7, 14, 35, 0.97);
+  border: 1px solid var(--border2);
+  border-radius: 18px;
+  padding: 24px;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 20px 60px rgba(0,0,0,.7), 0 0 0 1px rgba(0,200,255,.1);
+  pointer-events: all;
+  z-index: 8002;
+  animation: tourCardIn .3s ease both;
+}
+@keyframes tourCardIn {
+  from { opacity:0; transform: translateY(10px); }
+  to   { opacity:1; transform: none; }
+}
+
+.tour-card-anim { animation: tourCardIn .3s ease both; }
+
+#tour-step-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  background: rgba(0,200,255,.12);
+  border: 1px solid rgba(0,200,255,.3);
+  border-radius: 20px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--cyan);
+  letter-spacing: 2px;
+  margin-bottom: 12px;
+}
+
+#tour-title {
+  font-family: var(--font-display);
+  font-size: .95rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+
+#tour-desc {
+  font-size: .85rem;
+  color: var(--text-dim);
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+
+#tour-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+#tour-skip {
+  padding: 8px 16px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  cursor: pointer;
+  transition: all .2s;
+}
+#tour-skip:hover { color: var(--text-dim); border-color: var(--border2); }
+
+#tour-next {
+  padding: 8px 20px;
+  background: linear-gradient(135deg, var(--cyan), var(--purple));
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all .2s;
+  box-shadow: 0 4px 15px var(--cyan-glow);
+}
+#tour-next:hover { transform: translateY(-1px); box-shadow: 0 8px 25px var(--cyan-glow); }
 
 /* ══════════════════════════════════════════════════════════════════ */
 /*  HERO                                                              */
@@ -450,6 +793,7 @@ section { position: relative; z-index: 1; }
 .slider {
   flex: 1;
   -webkit-appearance: none;
+  appearance: none;
   height: 4px;
   background: var(--bg3);
   border-radius: 2px;
@@ -671,11 +1015,10 @@ section { position: relative; z-index: 1; }
 }
 
 .timeline-item.current {
-  background: rgba(0,200,255,0.2);
+  background: rgba(0,200,255,0.15);
   border-color: var(--cyan);
-  color: var(--cyan);
-  transform: scale(1.15);
-  box-shadow: 0 0 20px var(--cyan-glow);
+  color: var(--text);
+  box-shadow: 0 0 10px rgba(0,200,255,.25);
 }
 
 .timeline-item.hit {
@@ -943,6 +1286,8 @@ section { position: relative; z-index: 1; }
 
 .table-scroll {
   overflow-x: auto;
+  overflow-y: auto;      /* ← internal scroll only, page stays put */
+  max-height: 340px;
 }
 
 table {
@@ -1196,64 +1541,7 @@ footer span { color: var(--cyan); }
   opacity: 1;
 }
 
-/* ══════════════════════════════════════════════════════════════════ */
-/*  LOADING OVERLAY                                                   */
-/* ══════════════════════════════════════════════════════════════════ */
-#loader {
-  position: fixed;
-  inset: 0;
-  background: var(--bg);
-  z-index: 9999;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 24px;
-  transition: opacity 0.5s ease;
-}
 
-#loader.hide {
-  opacity: 0;
-  pointer-events: none;
-}
-
-.loader-logo {
-  font-family: var(--font-display);
-  font-size: 2.5rem;
-  font-weight: 900;
-  background: linear-gradient(90deg, var(--cyan), var(--purple));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  letter-spacing: 4px;
-}
-
-.loader-bar {
-  width: 200px;
-  height: 3px;
-  background: var(--bg3);
-  border-radius: 2px;
-  overflow: hidden;
-}
-
-.loader-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--cyan), var(--purple));
-  border-radius: 2px;
-  animation: load 1.2s ease forwards;
-}
-
-@keyframes load {
-  0% { width: 0; }
-  100% { width: 100%; }
-}
-
-.loader-text {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  color: var(--text-dim);
-  letter-spacing: 3px;
-}
 
 /* Animations utility */
 @keyframes fadeUp {
@@ -1271,3 +1559,384 @@ footer span { color: var(--cyan); }
   60%  { transform: scale(1.05); }
   100% { transform: scale(1); opacity: 1; }
 }
+
+
+
+/* ── Algorithm Reasoning Panel ───────────────────────────────────── */
+#reasonPanel {
+  margin-top: 14px;
+  padding: 14px 18px;
+  background: rgba(7,14,35,.90);
+  border: 1px solid rgba(0,200,255,.18);
+  border-left: 3px solid var(--cyan);
+  border-radius: 10px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: var(--text-dim);
+  display: none;
+}
+#reasonPanel .reason-title {
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--cyan);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  font-family: var(--font-display);
+}
+#reasonPanel .reason-main {
+  color: var(--text);
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+#reasonPanel .reason-frames {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+.reason-frame-chip {
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  border: 1px solid rgba(255,255,255,.08);
+  background: rgba(255,255,255,.04);
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.reason-frame-chip.evicted {
+  border-color: rgba(255,51,102,.5);
+  background: rgba(255,51,102,.08);
+  color: var(--red);
+}
+.reason-frame-chip.kept {
+  border-color: rgba(0,200,255,.2);
+  color: var(--text-dim);
+}
+.reason-frame-chip .rfc-label { opacity: .6; font-size: 10px; }
+.reason-frame-chip .rfc-val   { font-weight: 700; }
+/* ════════════════════════════════════════════════════════════════
+   TEXT VISIBILITY — COMPREHENSIVE OVERRIDES
+   Every piece of text must be clearly readable over the animated
+   background at all times.
+   ════════════════════════════════════════════════════════════════ */
+
+/* ── Base body text ── */
+body { color: #f0f6ff; }
+
+/* ── All panels: near-opaque dark glass so background can't bleed ── */
+.input-panel,
+.sim-panel,
+.timeline-panel,
+.frames-panel,
+.table-panel,
+.bar-chart,
+.algo-card,
+.compare-card,
+.live-stat,
+.live-stats {
+  background: rgba(5, 10, 28, 0.94) !important;
+  backdrop-filter: blur(24px) !important;
+  -webkit-backdrop-filter: blur(24px) !important;
+}
+
+/* ── Section wrappers get a soft dark backdrop ── */
+#algorithms,
+#simulator,
+#comparison {
+  background: rgba(2, 5, 16, 0.72);
+  backdrop-filter: blur(8px);
+}
+
+/* ── Hero: large frosted pill behind the text block ── */
+#hero .hero-badge,
+#hero .hero-title,
+#hero .hero-sub,
+#hero .hero-cta,
+#hero .hero-stats {
+  position: relative;
+  z-index: 2;
+}
+/* Dark halo behind the entire hero text group */
+#hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 70% 65% at 50% 48%,
+    rgba(2,7,20,.82) 0%,
+    rgba(2,7,20,.55) 55%,
+    rgba(2,7,20,0) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ── Hero text ── */
+.hero-title .line1 {
+  color: #ffffff !important;
+  text-shadow:
+    0 0  4px rgba(0,0,0,1),
+    0 2px 16px rgba(0,0,0,1),
+    0 0  40px rgba(2,7,20,.95);
+}
+.hero-title .line2 {
+  filter: drop-shadow(0 0 8px rgba(0,200,255,.5));
+}
+.hero-sub {
+  color: #c8d8f0 !important;
+  text-shadow: 0 1px 8px rgba(0,0,0,.9), 0 0 20px rgba(2,7,20,1);
+}
+.hero-badge {
+  background: rgba(5,12,30,.90) !important;
+  border-color: rgba(0,200,255,.5) !important;
+}
+.hero-stat .num {
+  color: var(--cyan) !important;
+  text-shadow: 0 0 12px var(--cyan-glow);
+}
+.hero-stat .label {
+  color: #94a3b8 !important;
+  text-shadow: 0 1px 6px rgba(0,0,0,.8);
+}
+
+/* ── Section headings ── */
+.section-label {
+  color: var(--cyan) !important;
+  text-shadow: 0 0 12px var(--cyan-glow);
+  background: rgba(5,12,30,.85) !important;
+  padding: 4px 14px !important;
+  border-radius: 20px !important;
+  display: inline-block !important;
+}
+.section-title {
+  color: #ffffff !important;
+  text-shadow: 0 2px 20px rgba(0,0,0,.9);
+}
+
+/* ── Algorithm cards ── */
+.algo-card h3 {
+  color: #ffffff !important;
+  text-shadow: 0 1px 10px rgba(0,0,0,.7);
+}
+.algo-card p {
+  color: #b8cce0 !important;
+}
+.algo-card .algo-icon {
+  filter: drop-shadow(0 0 8px currentColor);
+}
+
+/* ── Form / input panel ── */
+.form-label {
+  color: #c0d4ec !important;
+  font-weight: 600 !important;
+  text-shadow: 0 1px 4px rgba(0,0,0,.6);
+}
+.slider-val {
+  color: var(--cyan) !important;
+  text-shadow: 0 0 8px var(--cyan-glow);
+}
+.input-panel h2,
+.input-panel label {
+  color: #e8f2ff !important;
+}
+/* page input text */
+#pageInput {
+  color: #ffffff !important;
+  background: rgba(5,15,40,.92) !important;
+  border-color: rgba(0,200,255,.4) !important;
+}
+#pageInput::placeholder { color: #4a6080 !important; }
+
+/* ── Algo selector buttons ── */
+.algo-btn {
+  color: #9ab8d8 !important;
+  border-color: rgba(0,200,255,.25) !important;
+}
+.algo-btn.active {
+  color: #ffffff !important;
+  background: rgba(0,200,255,.18) !important;
+  border-color: var(--cyan) !important;
+  text-shadow: 0 0 8px var(--cyan-glow);
+}
+
+/* ── Timeline ── */
+.timeline-label {
+  color: #c8ddf5 !important;
+  font-weight: 600 !important;
+  text-shadow: 0 1px 6px rgba(0,0,0,.7);
+}
+.timeline-item {
+  color: #9ab8d4 !important;
+  background: rgba(5,12,32,.88) !important;
+  border-color: rgba(0,200,255,.2) !important;
+}
+.timeline-item.current {
+  color: #ffffff !important;
+  border-color: var(--cyan) !important;
+  background: rgba(0,200,255,.14) !important;
+}
+.timeline-item.hit { color: var(--green) !important; }
+.timeline-item.fault { color: var(--red) !important; }
+
+/* ── Memory frames ── */
+.frames-label {
+  color: #c8ddf5 !important;
+  font-weight: 600 !important;
+}
+.frames-panel {
+  background: rgba(5,10,28,.94) !important;
+}
+.frame-box {
+  background: rgba(5,14,36,.96) !important;
+  border-color: rgba(0,200,255,.25) !important;
+}
+.frame-box .frame-num {
+  color: #5a7a9a !important;
+  font-weight: 700 !important;
+}
+.frame-box .frame-val {
+  color: #e8f4ff !important;
+  font-size: 1.6rem !important;
+  font-weight: 900 !important;
+  text-shadow: 0 0 10px rgba(200,230,255,.3);
+}
+.frame-box.hit .frame-val {
+  color: var(--green) !important;
+  text-shadow: 0 0 16px var(--green-glow) !important;
+}
+.frame-box.fault .frame-val,
+.frame-box.replaced .frame-val {
+  color: var(--red) !important;
+  text-shadow: 0 0 16px var(--red-glow) !important;
+}
+
+/* ── Welcome state ── */
+.welcome-state h3 {
+  color: #c8ddf5 !important;
+}
+.welcome-state p {
+  color: #6a8aaa !important;
+}
+
+/* ── Live stats ── */
+.live-stat .stat-val {
+  text-shadow: 0 0 12px currentColor;
+}
+.live-stat .stat-label {
+  color: #8aaac8 !important;
+  font-weight: 600 !important;
+}
+.step-counter {
+  color: #8aaac8 !important;
+}
+.step-counter span {
+  color: var(--cyan) !important;
+  text-shadow: 0 0 8px var(--cyan-glow);
+}
+
+/* ── Status chips ── */
+.status-chip {
+  font-weight: 600 !important;
+  color: #e8f4ff !important;
+  background: rgba(5,12,32,.92) !important;
+  border-color: rgba(100,150,200,.3) !important;
+}
+.chip-hit  { color: var(--green) !important; border-color: rgba(0,255,136,.35) !important; }
+.chip-fault{ color: var(--red)   !important; border-color: rgba(255,51,102,.35) !important; }
+.chip-info { color: #c8d8f0     !important; }
+
+/* ── Table ── */
+.table-panel {
+  background: rgba(5,10,28,.96) !important;
+}
+table th {
+  color: var(--cyan) !important;
+  background: rgba(0,20,50,.95) !important;
+  text-shadow: 0 0 8px var(--cyan-glow);
+  font-weight: 700 !important;
+}
+table td {
+  color: #b8cce4 !important;
+  border-color: rgba(0,200,255,.08) !important;
+}
+.row-active td {
+  background: rgba(0,200,255,.1) !important;
+  color: #ffffff !important;
+}
+.cell-hit  { color: var(--green) !important; font-weight: 700 !important; }
+.cell-fault{ color: var(--red)   !important; font-weight: 700 !important; }
+.cell-page { color: var(--cyan)  !important; font-weight: 700 !important; }
+
+/* ── Comparison cards ── */
+.card-algo-name {
+  font-weight: 800 !important;
+  text-shadow: 0 0 12px currentColor;
+}
+.card-faults-big {
+  text-shadow: 0 0 18px currentColor;
+}
+.card-fault-label {
+  color: #8aaac8 !important;
+  font-weight: 600 !important;
+}
+.mini-stat .lbl {
+  color: #6a8aaa !important;
+  font-weight: 600 !important;
+}
+.winner-badge {
+  background: rgba(255,200,0,.15) !important;
+  color: #ffcc00 !important;
+  font-weight: 800 !important;
+  text-shadow: 0 0 10px rgba(255,200,0,.5);
+  border: 1px solid rgba(255,200,0,.3) !important;
+  border-radius: 6px;
+  padding: 3px 10px;
+}
+
+/* ── Bar chart ── */
+.bar-chart-title {
+  color: #c8ddf5 !important;
+  font-weight: 700 !important;
+  letter-spacing: 2px;
+}
+.chart-bar-name {
+  color: #9ab8d4 !important;
+  font-weight: 600 !important;
+}
+.chart-bar-fill {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  font-size: 11px !important;
+}
+
+/* ── Playback controls ── */
+.pb-btn {
+  color: #c8ddf5 !important;
+  background: rgba(5,14,36,.92) !important;
+  border-color: rgba(0,200,255,.25) !important;
+}
+.pb-btn.active {
+  color: var(--cyan) !important;
+  border-color: var(--cyan) !important;
+  background: rgba(0,200,255,.15) !important;
+}
+.speed-btn { color: #9ab8d4 !important; }
+.speed-btn.active { color: var(--cyan) !important; font-weight: 700 !important; }
+
+/* ── Buttons ── */
+#runBtn, #compareBtn {
+  font-weight: 700 !important;
+  text-shadow: 0 1px 6px rgba(0,0,0,.5);
+}
+
+/* ── Footer ── */
+footer {
+  background: rgba(2,6,18,.96) !important;
+  color: #6a8aaa !important;
+  border-top: 1px solid rgba(0,200,255,.1) !important;
+}
+footer span { color: var(--cyan) !important; }
+
+/* ── Section ──────────────────────────────────────────────────────── */
+section { position: relative; z-index: 1; }
+

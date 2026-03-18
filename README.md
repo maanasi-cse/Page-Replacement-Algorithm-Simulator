@@ -1,108 +1,91 @@
-# 🧠 MemOS — Page Replacement Algorithm Simulator
+# 🧠 MemOS — Page Replacement Simulator
 
-A premium, animated, full-stack interactive simulator for FIFO, LRU, and Optimal page replacement algorithms.
+Interactive simulator for **FIFO**, **LRU**, and **Optimal** page replacement algorithms.
 
-**Stack:** Node.js + Express (backend) · HTML/CSS/JS (frontend)
+**Stack:** Node.js · Express · HTML / CSS / JS
 
 ---
 
-## 🚀 Quick Start
-
-### 1. Install Dependencies
+## 🚀 Getting Started
 
 ```bash
 npm install
-```
-
-### 2. Start the Server
-
-```bash
 npm start
+# open http://localhost:3000
 ```
 
-Or with auto-reload during development:
-
-```bash
-npm run dev   # requires: npm install -g nodemon
-```
-
-### 3. Open in Browser
-
-```
-http://localhost:3000
-```
+> Dev mode (auto-reload): `npm run dev` — requires `nodemon`
 
 ---
 
-## 📁 Project Structure
+## 📁 Structure
 
 ```
-page-replacement-simulator/
-├── server.js              ← Express server + algorithm logic (FIFO, LRU, Optimal)
-├── package.json
+├── server.js              # Express entry point
+├── algorithms/
+│   ├── fifo.js
+│   ├── lru.js
+│   └── optimal.js
+├── routes/
+│   ├── simulate.js        # POST /api/simulate
+│   └── compare.js         # POST /api/compare
 └── public/
-    ├── index.html         ← Main page (hero, simulator, comparison)
+    ├── index.html
     ├── css/
-    │   └── style.css      ← Premium dark cyber-OS theme + animations
+    │   ├── style.css      # ← browser loads this (bundled)
+    │   └── *.css          # individual modules (edit these)
     └── js/
-        └── main.js        ← Simulation engine, playback, API calls
+        ├── utils.js       # shared App state + helpers
+        ├── background.js  # canvas animation
+        ├── playback.js    # play / pause / step
+        ├── simulator.js   # core simulation engine
+        ├── comparison.js  # compare all algorithms
+        ├── tour.js        # guided tour
+        ├── boot.js        # boot screen
+        └── keyboard.js    # keyboard shortcuts
 ```
 
 ---
 
-## 🔌 API Endpoints
+## 🔌 API
 
 ### `POST /api/simulate`
 
-Run a single algorithm step-by-step.
-
 ```json
-Request:  { "pages": [7,0,1,2,0,3], "frames": 3, "algorithm": "fifo" }
-Response: { "steps": [...], "faults": 9, "hits": 3 }
+{ "pages": [7, 0, 1, 2, 0, 3], "frames": 3, "algorithm": "fifo" }
 ```
 
 ### `POST /api/compare`
 
-Compare all three algorithms at once.
-
 ```json
-Request:  { "pages": [7,0,1,2,0,3], "frames": 3 }
-Response: { "results": { "fifo": {...}, "lru": {...}, "optimal": {...} }, "winner": "optimal" }
+{ "pages": [7, 0, 1, 2, 0, 3], "frames": 3 }
 ```
-
----
-
-## 🎮 Features
-
-- ⚡ **Animated memory frames** — hit (green glow), fault (red shake), replacement (yellow swap)
-- 📍 **Live page timeline** — current step highlighted, past steps color-coded
-- 📊 **Live stats** — real-time fault/hit counters and hit rate %
-- ▶ **Step-by-step + Auto-play** — with speed controls (0.5×, 1×, 2×)
-- ⌨️ **Keyboard shortcuts** — Arrow keys to step, Space to play/pause, R to run
-- 📋 **Full step trace table** — shows every frame state per step
-- 📈 **Algorithm comparison** — animated cards + bar chart + winner highlight
-- 🏆 **Page fault counter animation** — satisfying count-up effect
-
----
-
-## 🎨 Design
-
-- **Theme:** Dark Cyber-OS · Deep navy + cyan glow + purple accents
-- **Fonts:** Orbitron (display) · Share Tech Mono (code) · Inter (body)
-- **Effects:** Glassmorphism · Floating memory blocks · Grid background · Noise texture
-- **Animations:** Scroll reveal · Frame shake/glow · Loading screen · Toast notifications
 
 ---
 
 ## ⌨️ Keyboard Shortcuts
 
-| Key     | Action         |
-| ------- | -------------- |
-| `→`     | Step Forward   |
-| `←`     | Step Back      |
-| `Space` | Play / Pause   |
-| `R`     | Run Simulation |
+| Key     | Action              |
+| ------- | ------------------- |
+| `→ / ←` | Step forward / back |
+| `Space` | Play / Pause        |
+| `R`     | Run simulation      |
+| `Esc`   | Close tour          |
 
 ---
 
-Built with ❤️ from LPU 🚀
+## 🔄 Rebuild CSS Bundle
+
+After editing any CSS module, regenerate `style.css`:
+
+```bash
+cat public/css/variables.css public/css/base.css public/css/boot.css \
+    public/css/tour.css public/css/hero.css public/css/algorithms.css \
+    public/css/simulator.css public/css/table.css public/css/comparison.css \
+    public/css/footer.css public/css/reasoning.css public/css/overrides.css \
+    > public/css/style.css
+```
+
+---
+
+Built with ❤️ for **LPU** 🚀

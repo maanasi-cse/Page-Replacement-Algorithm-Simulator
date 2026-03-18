@@ -1,0 +1,68 @@
+/**
+ * variables.css — Design Tokens (CSS Custom Properties)
+ *
+ * WHY A SEPARATE FILE?
+ *   All colours, spacing, and font names are defined ONCE here as CSS
+ *   variables (also called "custom properties"). Every other stylesheet
+ *   references these variables (e.g. var(--cyan)) instead of hard-coding
+ *   a hex value. This means:
+ *     • Changing the theme colour in one place updates the whole app.
+ *     • Students can see the entire colour palette at a glance.
+ *
+ * HOW CSS VARIABLES WORK:
+ *   Defined with a leading --  inside :root { }
+ *   Used anywhere with  var(--variable-name)
+ *   Example:   color: var(--cyan);   →   color: #00c8ff;
+ */
+
+/* ── Google Fonts ─────────────────────────────────────────────────
+   @import loads three font families from Google's CDN:
+     Orbitron   — futuristic display font for headings and numbers
+     Share Tech Mono — monospaced font for code-like labels
+     Inter      — clean sans-serif for body text
+   ──────────────────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Share+Tech+Mono&family=Inter:wght@300;400;500;600&display=swap');
+
+/* ── :root — global scope for CSS variables ────────────────────── */
+:root {
+
+  /* ── Background colours ── */
+  --bg:    #020714;  /* deep navy — main page background */
+  --bg2:   #070d1f;  /* slightly lighter navy — used for panels */
+  --bg3:   #0c1632;  /* medium navy — borders, inputs */
+
+  /* ── Glass-morphism panel fills ──
+     rgba with low opacity so the animated canvas shows faintly through */
+  --glass:  rgba(8,  16, 40, 0.82);  /* panel background: 82% opaque */
+  --glass2: rgba(12, 24, 56, 0.90);  /* slightly more opaque variant */
+
+  /* ── Border colours ── */
+  --border:  rgba(0, 200, 255, 0.20);  /* subtle cyan border */
+  --border2: rgba(0, 200, 255, 0.40);  /* more visible cyan border */
+
+  /* ── Accent colours ── */
+  --cyan:       #00c8ff;              /* primary accent: page hits, labels */
+  --cyan-glow:  rgba(0, 200, 255, 0.4); /* glow shadow for cyan elements */
+
+  --green:      #00ff88;              /* success: page hit frames */
+  --green-glow: rgba(0, 255, 136, 0.4);
+
+  --red:        #ff3366;              /* error: page fault frames */
+  --red-glow:   rgba(255, 51, 102, 0.4);
+
+  --yellow:     #ffcc00;              /* warning: frame replacement */
+  --purple:     #a855f7;              /* secondary accent: LRU, gradients */
+
+  /* ── Text colours ── */
+  --text:       #f0f6ff;  /* primary text — near-white, easy on dark bg */
+  --text-dim:   #94a3b8;  /* secondary text — muted grey-blue */
+  --text-muted: #64748b;  /* tertiary text — even more muted */
+
+  /* ── Font stacks ──
+     font-display = headings, numbers  (Orbitron is the star, monospace fallback)
+     font-mono    = code labels, step numbers
+     font-body    = paragraphs, descriptions */
+  --font-display: 'Orbitron',      monospace;
+  --font-mono:    'Share Tech Mono', monospace;
+  --font-body:    'Inter',           sans-serif;
+}
