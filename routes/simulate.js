@@ -28,10 +28,10 @@
 const fifo    = require('../algorithms/fifo');
 const lru     = require('../algorithms/lru');
 const optimal = require('../algorithms/optimal');
-
+const clock = require('../algorithms/clock');
 // Map algorithm name strings → actual functions.
 // This makes it easy to add a new algorithm later: just add one line here.
-const ALGORITHMS = { fifo, lru, optimal };
+const ALGORITHMS = { fifo, lru, optimal , clock};
 
 /**
  * Express route handler — called when a POST request hits /api/simulate.
