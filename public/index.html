@@ -69,7 +69,7 @@
       </div>
       <div class="hero-stats">
         <div class="hero-stat">
-          <span class="num">3</span><span class="label">Algorithms</span>
+          <span class="num">4</span><span class="label">Algorithms</span>
         </div>
         <div class="hero-stat">
           <span class="num">∞</span><span class="label">Sequences</span>
@@ -137,6 +137,22 @@
           </p>
           <span class="algo-tag tag-green">BELADY'S ALGORITHM</span>
         </div>
+        <div
+          class="algo-card fade-el"
+          onclick="
+            selectAlgo('clock');
+            scrollToSection('#simulator');
+          "
+        >
+          <div class="algo-icon" style="color:var(--yellow)">🕐</div>
+          <h3>Clock</h3>
+          <p>
+            Second Chance — frames are arranged in a circle with a
+            clock hand. Pages get a second chance via a reference bit.
+            The real algorithm used inside Linux and Windows kernels.
+          </p>
+          <span class="algo-tag" style="background:rgba(255,204,0,0.15);color:var(--yellow)">SECOND CHANCE</span>
+        </div>
       </div>
     </section>
 
@@ -198,6 +214,13 @@
                 onclick="selectAlgo('optimal')"
               >
                 OPTIMAL
+              </button>
+              <button
+                class="algo-btn"
+                id="btn-clock"
+                onclick="selectAlgo('clock')"
+              >
+                CLOCK
               </button>
             </div>
           </div>
@@ -357,7 +380,7 @@
               margin-bottom: 28px;
             "
           >
-            Run FIFO, LRU, and Optimal side-by-side and see which wins
+            Run FIFO, LRU, Optimal, and Clock side-by-side and see which wins
           </p>
           <button
             class="btn-primary"
