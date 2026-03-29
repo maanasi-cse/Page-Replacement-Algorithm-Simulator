@@ -18,6 +18,7 @@
     { t:'> Initializing FIFO page handler... OK',   d:900,  c:'#00ff88' },
     { t:'> Initializing LRU algorithm...     OK',   d:1150, c:'#00ff88' },
     { t:'> Initializing Optimal predictor... OK',   d:1380, c:'#00ff88' },
+    { t:'> Initializing Clock handler...     OK',   d:1560, c:'#ffcc00' },
     { t:'> Allocating 3 memory frames...',           d:1600, c:'#ffcc00' },
   ];
 
