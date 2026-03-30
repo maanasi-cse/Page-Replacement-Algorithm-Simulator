@@ -8,6 +8,7 @@ const ALGO_META = [
   { key:'fifo',    name:'FIFO',    icon:'📦', color:'var(--cyan)',   barColor:'#00c8ff' },
   { key:'lru',     name:'LRU',     icon:'🔁', color:'var(--purple)', barColor:'#a855f7' },
   { key:'optimal', name:'Optimal', icon:'🎯', color:'var(--green)',  barColor:'#00ff88' },
+  { key:'clock',   name:'Clock',   icon:'🕐', color:'var(--yellow)', barColor:'#ffcc00' },
 ];
 
 async function runComparison() {

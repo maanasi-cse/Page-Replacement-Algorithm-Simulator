@@ -27,7 +27,7 @@
 const fifo    = require('../algorithms/fifo');
 const lru     = require('../algorithms/lru');
 const optimal = require('../algorithms/optimal');
-
+const clock = require('../algorithms/clock');
 /**
  * @param {import('express').Request}  req
  * @param {import('express').Response} res
@@ -45,6 +45,7 @@ function compareRoute(req, res) {
     fifo:    fifo(pages, frames),
     lru:     lru(pages, frames),
     optimal: optimal(pages, frames),
+    clock: clock(pages, frames)
   };
 
   // Build a compact summary for each algorithm (we don't send full steps here
